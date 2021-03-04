@@ -12,4 +12,7 @@ RUN ./configure && make && make install \
     # add path to libraptor2.so
     && echo /usr/local/lib > /etc/ld.so.conf.d/raptor.conf && ldconfig
 
+RUN mkdir /work
+WORKDIR /work
+
 CMD ["rapper", "-h"]
