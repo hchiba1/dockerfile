@@ -1,7 +1,41 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends raptor2-utils \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends raptor2-utils libgetopt-complete-perl \
     && rm -rf /var/lib/apt/lists/*
+
+# install executable for utilities
+COPY ./bin/* /usr/local/bin/
+
+# install java
+RUN apt-get update && \
+	apt-get install -y curl openjdk-11-jdk && \
+	apt-get install -y ant && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /var/cache/oracle-jdk11-installer;
+	
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+RUN export JAVA_HOME
+
+# install jena
+ENV JENA_VERSION 3.17.0
+ENV ASF_MIRROR http://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=
+ENV ASF_ARCHIVE http://archive.apache.org/dist/
+WORKDIR /tmp
+RUN curl --fail --silent --show-error --retry-connrefused --retry 3 -O $ASF_ARCHIVE/jena/binaries/apache-jena-$JENA_VERSION.tar.gz.sha512
+RUN (curl --location --silent --show-error --fail --retry-connrefused --retry 3 -O ${ASF_MIRROR}jena/binaries/apache-jena-$JENA_VERSION.tar.gz || \
+  curl --fail --silent --show-error --retry-connrefused --retry 3 -O $ASF_ARCHIVE/jena/binaries/apache-jena-$JENA_VERSION.tar.gz) && \
+  sha512sum -c apache-jena-$JENA_VERSION.tar.gz.sha512 && \
+  mv apache-jena-$JENA_VERSION.tar.gz jena.tar.gz && \
+  rm apache-jena-$JENA_VERSION.tar.gz.sha512 && \
+	tar zxf jena.tar.gz && \
+	mv apache-jena* /jena && \
+	rm jena.tar.gz* && \
+	cd /jena && rm -rf *javadoc* *src* bat
+ENV PATH $PATH:/jena/bin
+# check installation of jena
+RUN riot  --version
+
 
 RUN mkdir /work
 WORKDIR /work
