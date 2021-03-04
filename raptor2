@@ -37,6 +37,19 @@ ENV PATH $PATH:/jena/bin
 RUN riot  --version
 
 
+# install spang2
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+ && apt-get install -y git nodejs \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/*
+
+
+RUN cd /opt \
+ && git clone https://github.com/hchiba1/spang \
+ && cd spang \
+ && npm install \
+ && npm link
+
 RUN mkdir /work
 WORKDIR /work
 
