@@ -2,18 +2,22 @@
 
 ## Build
 ```
-docker build -t spang -f dockerfile .
+docker build -t spang [-f Dockerfile] .
 ```
 
 ## Run
 
-command using `rapper`
+Use `rapper` command
+
+Use commands that use `rapper` command
 ```
 cat raptor.rdf | docker run -i --rm spang rdfcount
 cat raptor.rdf | docker run -i --rm spang rdf2ttl
 ```
 
-command included in Jena
+Use `sparql` (included in Jena package)
 ```
 docker run -v $(pwd):/work -i --rm raptor2 sparql --data=raptor.rdf --query=test.rq
 ```
+
+Use `spang` command
