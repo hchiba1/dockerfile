@@ -4,7 +4,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
-RUN wget https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.tar.gz && tar zxvf apache-jena-3.17.0.tar.gz
+RUN wget https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.tar.gz && tar zxvf apache-jena-3.17.0.tar.gz \
+    && rm *.tar.gz
 ENV PATH $PATH:/opt/apache-jena-3.17.0/bin
 
 RUN mkdir /work
