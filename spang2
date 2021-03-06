@@ -1,11 +1,9 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends curl git \
-                                     wget default-jre-headless libgetopt-complete-perl \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends wget git \
     && rm -rf /var/lib/apt/lists/*
-
-RUN curl -LsSf https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs \
+RUN wget https://deb.nodesource.com/setup_12.x -O - | bash -
+RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends npm \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
