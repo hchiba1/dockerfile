@@ -1,8 +1,7 @@
 FROM alpine:3.13.2
 
-RUN apk add raptor2
-
-RUN mkdir /work
+RUN apk add --no-cache raptor2 \
+    && mkdir /work
 WORKDIR /work
 
 CMD ["rapper", "-h"]
