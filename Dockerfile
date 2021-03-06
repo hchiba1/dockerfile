@@ -1,7 +1,8 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends raptor2-utils libgetopt-complete-perl \
-                                     wget default-jre-headless git
+                                     wget default-jre-headless git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Perl scripts that use rapper command
 COPY ./bin/* /usr/local/bin/
@@ -16,7 +17,7 @@ ENV PATH $PATH:/opt/apache-jena-3.17.0/bin
 WORKDIR /opt
 RUN git clone https://github.com/hchiba1/spang
 RUN wget https://deb.nodesource.com/setup_12.x -O - | bash -
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/spang
 RUN npm install && npm link
