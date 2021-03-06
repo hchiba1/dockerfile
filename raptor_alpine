@@ -1,0 +1,13 @@
+FROM alpine:3.13.2
+
+RUN apk add build-base libxml2-dev
+
+WORKDIR /opt
+RUN wget http://download.librdf.org/source/raptor2-2.0.15.tar.gz && tar zxvf raptor2-2.0.15.tar.gz
+WORKDIR raptor2-2.0.15
+RUN ./configure && make && make install
+
+RUN mkdir /work
+WORKDIR /work
+
+CMD ["rapper", "-h"]
