@@ -1,0 +1,19 @@
+FROM alpine:3.13.2
+
+RUN apk add --no-cache raptor2 openjdk11-jre-headless npm git
+
+# Jena
+WORKDIR /opt
+RUN wget https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.tar.gz && tar zxvf apache-jena-3.17.0.tar.gz \
+    && rm *.tar.gz
+ENV PATH $PATH:/opt/apache-jena-3.17.0/bin
+
+# SPANG
+RUN git clone https://github.com/hchiba1/spang
+WORKDIR spang
+RUN npm install && npm link
+
+RUN mkdir /work
+WORKDIR /work
+
+CMD ["spang"]
